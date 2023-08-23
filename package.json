@@ -1,0 +1,53 @@
+{
+  "name": "meteor-template",
+  "private": true,
+  "scripts": {
+    "start": "meteor --exclude-archs web.browser.legacy,web.cordova --settings private/env/dev/settings.json",
+    "quave-eslint": "eslint . --fix",
+    "quave-prettier": "prettier --write \"**/*.js\"",
+    "quave-check": "npm run quave-eslint && npm run quave-prettier"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.21.0",
+    "@headlessui/react": "^1.7.12",
+    "@heroicons/react": "^2.0.16",
+    "autoprefixer": "^10.4.13",
+    "meteor-node-stubs": "^1.2.5",
+    "postcss": "^8.4.21",
+    "postcss-load-config": "^4.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-error-boundary": "^3.1.4",
+    "react-router-dom": "^6.8.1",
+    "tailwindcss": "^3.2.7"
+  },
+  "meteor": {
+    "mainModule": {
+      "client": "client/main.js",
+      "server": "server/main.js"
+    }
+  },
+  "devDependencies": {
+    "@quave/eslint-config-quave": "^1.0.7",
+    "prettier": "^2.6.2",
+    "prettier-plugin-tailwindcss": "^0.1.11"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@quave/quave"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "meteor npm test && lint-staged",
+      "post-commit": "git update-index --again"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write",
+      "git add"
+    ]
+  }
+}
