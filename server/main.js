@@ -34,6 +34,7 @@ const duplicateEventsAndActions = (
 
   const gameTypeEvents = GameTypeEvents.find(qE).fetch();
 
+  console.log(1, moment().diff(startMoment));
   const eventDuplicateDict = {};
   _.each(gameTypeEvents, (evt) => {
     const event = evt;
@@ -58,6 +59,7 @@ const duplicateEventsAndActions = (
     eventDuplicateDict[oldEventId] = newEventId;
 
     // console.log('duplicated event', oldEventId, 'under new _id:', newEventId);
+    console.log(1.1, moment().diff(startMoment));
   });
 
   // console.log('eventDuplicateDict', eventDuplicateDict);
@@ -181,7 +183,7 @@ const duplicateEventsAndActions = (
 Meteor.methods({
   duplicateGameType(gameTypeId, startMoment) {
     if (true) {
-      console.log('TRUE!');
+      console.log('method start', moment().diff(startMoment));
       const gameType = GameTypes.findOne(gameTypeId);
 
       const duplicateFn = () => {
@@ -230,6 +232,7 @@ Meteor.methods({
           // console.log('duplicated property', oldPropertyId, 'under new _id:', newPropertyId);
         });
 
+        console.log('before eventAndActions', moment().diff(startMoment));
         duplicateEventsAndActions(
           gameTypeId,
           newGameTypeId,
@@ -278,6 +281,7 @@ Meteor.startup(() => {
 
   const startTime = moment();
   console.log('START - APPLICATION SPECIFIC TEST', startTime);
+  console.log(1, moment().diff(startTime));
   Meteor.setTimeout(() => {
     Partitioner.directOperation(() => {
       duplicateAndRemoveGameTypes();

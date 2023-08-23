@@ -5,6 +5,7 @@
     }
   },
   "private": {
+    "DUPLICATE_IDS": [],
     "ITERATIONS": 1
   },
   "packages": {
