@@ -172,6 +172,8 @@ const duplicateEventsAndActions = (
     // console.log('updated blankEventUponPlacement from', oldEventId, 'to', newEventId);
   });
 
+  console.log(6, moment().diff(startMoment));
+
   _.each(actionsDuplicateDict, (newActionId, oldActionId) => {
     GameTypeEventActions.update(
       { gameTypeId: newGameTypeId, 'nextActions.default': oldActionId },
@@ -181,6 +183,8 @@ const duplicateEventsAndActions = (
     );
     // console.log('updated nextActions.default from', oldActionId, 'to', newActionId);
   });
+
+  console.log(7, moment().diff(startMoment));
 };
 
 Meteor.methods({
@@ -243,6 +247,7 @@ Meteor.methods({
           null,
           startMoment
         );
+        console.log('after eventAndActions', moment().diff(startMoment));
 
         // console.log('END duplication of GameType', gameTypeId, 'now available under', newGameTypeId);
         // console.log('----------------------------------------');
