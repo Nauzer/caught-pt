@@ -270,73 +270,78 @@ Meteor.methods({
 });
 
 Meteor.startup(() => {
-  const duplicateAndRemoveIds = ['sne3x4cg2oAt8v5HH'];
-  const duplicateAndRemoveGameTypes = () => {
-    duplicateAndRemoveIds.forEach((gameTypeId) => {
-      const gameType = GameTypes.findOne(gameTypeId);
-      console.log('gameType', gameType);
-      if (gameType) {
-        const it = Meteor.settings.private.ITERATIONS || 1;
-        console.log('Iterations:', it);
-        for (let j = 1; j <= it; j++) {
-          const start = moment();
-          console.log('START', start);
-          Meteor.call('duplicateGameType', gameTypeId, start, (e, result) => {
-            if (!e && result) {
-              const end = moment();
-              console.log('END Duplicating', j, end, `(${end.diff(start)}ms)`);
-
-              // console.log(GameTypes.remove({_id: gameTypeId}));
-            } else if (e) {
-              console.log(e);
-            }
-          });
-        }
-      } else {
-        console.log('els');
-      }
-    });
-  };
-
-  const startTime = moment();
-  console.log('START - APPLICATION SPECIFIC TEST', startTime);
-  console.log(1, moment().diff(startTime));
   Meteor.setTimeout(() => {
+    const duplicateAndRemoveIds = ['sne3x4cg2oAt8v5HH'];
+    const duplicateAndRemoveGameTypes = () => {
+      duplicateAndRemoveIds.forEach((gameTypeId) => {
+        const gameType = GameTypes.findOne(gameTypeId);
+        console.log('gameType', gameType);
+        if (gameType) {
+          const it = Meteor.settings.private.ITERATIONS || 1;
+          console.log('Iterations:', it);
+          for (let j = 1; j <= it; j++) {
+            const start = moment();
+            console.log('START', start);
+            Meteor.call('duplicateGameType', gameTypeId, start, (e, result) => {
+              if (!e && result) {
+                const end = moment();
+                console.log(
+                  'END Duplicating',
+                  j,
+                  end,
+                  `(${end.diff(start)}ms)`
+                );
+
+                // console.log(GameTypes.remove({_id: gameTypeId}));
+              } else if (e) {
+                console.log(e);
+              }
+            });
+          }
+        } else {
+          console.log('els');
+        }
+      });
+    };
+
+    const startTime = moment();
+    console.log('START - APPLICATION SPECIFIC TEST', startTime);
+    console.log(1, moment().diff(startTime));
     Partitioner.directOperation(() => {
       duplicateAndRemoveGameTypes();
     });
-  }, 10000);
-  const endTime = moment();
-  console.log(
-    'END - APPLICATION SPECIFIC TEST',
-    endTime,
-    `(${endTime.diff(startTime)})`
-  );
-
-  let count = 0;
-
-  const fibonacci = (num) => {
-    if (num <= 1) {
-      if (count++ % 100 === 0) {
-        // console.log(`fibonacci temp ${num}`);
-        count = 0;
-      }
-      return num;
-    }
-    return fibonacci(num - 1) + fibonacci(num - 2);
-  };
-
-  const start = moment();
-  const iterations = Meteor.settings.private.ITERATIONS || 1;
-  console.log('PT FIBONACCI START', start, 'iterations:', iterations);
-  for (let i = 1; i <= iterations; i++) {
-    const startIt = moment();
-    fibonacci(43);
-    const endIt = moment();
+    const endTime = moment();
     console.log(
-      `Fibonacci(43) - iteration ${i} - took ${endIt.diff(startIt)}ms`
+      'END - APPLICATION SPECIFIC TEST',
+      endTime,
+      `(${endTime.diff(startTime)})`
     );
-  }
-  const end = moment();
-  console.log('PT FIBONACCI END', end, `Took (${end.diff(start)}ms)`);
+
+    let count = 0;
+
+    const fibonacci = (num) => {
+      if (num <= 1) {
+        if (count++ % 100 === 0) {
+          // console.log(`fibonacci temp ${num}`);
+          count = 0;
+        }
+        return num;
+      }
+      return fibonacci(num - 1) + fibonacci(num - 2);
+    };
+
+    const start = moment();
+    const iterations = Meteor.settings.private.ITERATIONS || 1;
+    console.log('PT FIBONACCI START', start, 'iterations:', iterations);
+    for (let i = 1; i <= iterations; i++) {
+      const startIt = moment();
+      fibonacci(43);
+      const endIt = moment();
+      console.log(
+        `Fibonacci(43) - iteration ${i} - took ${endIt.diff(startIt)}ms`
+      );
+    }
+    const end = moment();
+    console.log('PT FIBONACCI END', end, `Took (${end.diff(start)}ms)`);
+  }, 10000);
 });
