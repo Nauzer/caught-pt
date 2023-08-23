@@ -4,6 +4,9 @@
       "name": "Meteor Template by quave"
     }
   },
+  "private": {
+    "ITERATIONS": 1
+  },
   "packages": {
     "quave:email-postmark": {
       "apiToken": "YOUR_API_TOKEN",
