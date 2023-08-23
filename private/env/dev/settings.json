@@ -5,7 +5,7 @@
     }
   },
   "private": {
-    "ITERATIONS": 2
+    "ITERATIONS": 5
   },
   "packages": {
     "quave:email-postmark": {
@@ -15,7 +15,7 @@
   },
   "galaxy.meteor.com": {
     "env": {
-      "MONGO_URL": "mongodb+srv://caught-mongo:u35gfAWFtdiKGNuNczk56RnY@caught.zhdnm.mongodb.net/caught?retryWrites=true&w=majority",
+      "MONGO_URL": "<HIDDEN>>",
       "TZ": "Europe/Amsterdam"
     }
   }
