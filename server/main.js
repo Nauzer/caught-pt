@@ -282,21 +282,7 @@ Meteor.startup(() => {
           for (let j = 1; j <= it; j++) {
             const start = moment();
             console.log('START', start);
-            Meteor.call('duplicateGameType', gameTypeId, start, (e, result) => {
-              if (!e && result) {
-                const end = moment();
-                console.log(
-                  'END Duplicating',
-                  j,
-                  end,
-                  `(${end.diff(start)}ms)`
-                );
-
-                // console.log(GameTypes.remove({_id: gameTypeId}));
-              } else if (e) {
-                console.log(e);
-              }
-            });
+            Meteor.call('duplicateGameType', gameTypeId, start);
           }
         } else {
           console.log('els');
