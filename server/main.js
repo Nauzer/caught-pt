@@ -46,6 +46,7 @@ const duplicateEventsAndActions = (
       event.genericProperties &&
       event.genericProperties.eventQuizModeProperties
     ) {
+      console.log('loop quizmodeProperties before', moment().diff(startMoment));
       _.each(event.genericProperties.eventQuizModeProperties, (elem, index) => {
         event.genericProperties.eventQuizModeProperties.splice(
           index,
@@ -53,10 +54,13 @@ const duplicateEventsAndActions = (
           propertyDuplicateDict[elem]
         );
       });
+      console.log('loop quizmodeProperties after', moment().diff(startMoment));
     }
 
+    console.log('before insert', moment().diff(startMoment));
     const newEventId = GameTypeEvents.insert(event);
     eventDuplicateDict[oldEventId] = newEventId;
+    console.log('after insert', moment().diff(startMoment));
 
     // console.log('duplicated event', oldEventId, 'under new _id:', newEventId);
     console.log(1.1, moment().diff(startMoment));
@@ -154,7 +158,6 @@ const duplicateEventsAndActions = (
     // console.log('duplicated action', oldActionId, 'under new _id:', newActionId);
     console.log(5.2, moment().diff(startMoment));
   });
-
   // start fixing references (blankEventUponPlacement Id's)
   _.each(eventDuplicateDict, (newEventId, oldEventId) => {
     GameTypeEvents.update(
