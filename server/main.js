@@ -158,6 +158,13 @@ const duplicateEventsAndActions = (
     // console.log('duplicated action', oldActionId, 'under new _id:', newActionId);
     console.log(5.2, moment().diff(startMoment));
   });
+
+  console.log(
+    6,
+    moment().diff(startMoment),
+    Object.keys(eventDuplicateDict).length,
+    'events'
+  );
   // start fixing references (blankEventUponPlacement Id's)
   _.each(eventDuplicateDict, (newEventId, oldEventId) => {
     GameTypeEvents.update(
@@ -172,8 +179,12 @@ const duplicateEventsAndActions = (
     // console.log('updated blankEventUponPlacement from', oldEventId, 'to', newEventId);
   });
 
-  console.log(6, moment().diff(startMoment));
-
+  console.log(
+    7,
+    moment().diff(startMoment),
+    Object.keys(actionsDuplicateDict).length,
+    'actions'
+  );
   _.each(actionsDuplicateDict, (newActionId, oldActionId) => {
     GameTypeEventActions.update(
       { gameTypeId: newGameTypeId, 'nextActions.default': oldActionId },
@@ -184,7 +195,7 @@ const duplicateEventsAndActions = (
     // console.log('updated nextActions.default from', oldActionId, 'to', newActionId);
   });
 
-  console.log(7, moment().diff(startMoment));
+  console.log(8, moment().diff(startMoment));
 };
 
 Meteor.methods({
