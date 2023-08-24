@@ -269,65 +269,84 @@ Meteor.methods({
   },
 });
 
-Meteor.startup(() => {
-  Meteor.setTimeout(() => {
-    const duplicateAndRemoveIds = ['sne3x4cg2oAt8v5HH'];
-    const duplicateAndRemoveGameTypes = () => {
-      duplicateAndRemoveIds.forEach((gameTypeId) => {
-        const gameType = GameTypes.findOne(gameTypeId);
-        console.log('gameType', gameType);
-        if (gameType) {
-          const it = Meteor.settings.private.ITERATIONS || 1;
-          console.log('Iterations:', it);
-          for (let j = 1; j <= it; j++) {
-            const start = moment();
-            console.log('START', start);
-            Meteor.call('duplicateGameType', gameTypeId, start);
-          }
-        } else {
-          console.log('els');
+function runAppSpecific() {
+  const duplicateAndRemoveIds = ['sne3x4cg2oAt8v5HH'];
+  const duplicateAndRemoveGameTypes = () => {
+    duplicateAndRemoveIds.forEach((gameTypeId) => {
+      const gameType = GameTypes.findOne(gameTypeId);
+      console.log('gameType', gameType);
+      if (gameType) {
+        const it = Meteor.settings.private.ITERATIONS || 1;
+        console.log('Iterations:', it);
+        for (let j = 1; j <= it; j++) {
+          const start = moment();
+          console.log('START', start);
+          Meteor.call('duplicateGameType', gameTypeId, start);
         }
-      });
-    };
-
-    const startTime = moment();
-    console.log('START - APPLICATION SPECIFIC TEST', startTime);
-    console.log(1, moment().diff(startTime));
-    Partitioner.directOperation(() => {
-      duplicateAndRemoveGameTypes();
-    });
-    const endTime = moment();
-    console.log(
-      'END - APPLICATION SPECIFIC TEST',
-      endTime,
-      `(${endTime.diff(startTime)})`
-    );
-
-    let count = 0;
-
-    const fibonacci = (num) => {
-      if (num <= 1) {
-        if (count++ % 100 === 0) {
-          // console.log(`fibonacci temp ${num}`);
-          count = 0;
-        }
-        return num;
+      } else {
+        console.log('els');
       }
-      return fibonacci(num - 1) + fibonacci(num - 2);
-    };
+    });
+  };
 
-    const start = moment();
-    const iterations = Meteor.settings.private.ITERATIONS || 1;
-    console.log('PT FIBONACCI START', start, 'iterations:', iterations);
-    for (let i = 1; i <= iterations; i++) {
-      const startIt = moment();
-      fibonacci(43);
-      const endIt = moment();
-      console.log(
-        `Fibonacci(43) - iteration ${i} - took ${endIt.diff(startIt)}ms`
-      );
+  const startTime = moment();
+  console.log('START - APPLICATION SPECIFIC TEST', startTime);
+  console.log(1, moment().diff(startTime));
+  Partitioner.directOperation(() => {
+    duplicateAndRemoveGameTypes();
+  });
+  const endTime = moment();
+  console.log(
+    'END - APPLICATION SPECIFIC TEST',
+    endTime,
+    `Took (${endTime.diff(startTime)}ms)`
+  );
+}
+
+function runFib() {
+  let count = 0;
+
+  const fibonacci = (num) => {
+    if (num <= 1) {
+      if (count++ % 100 === 0) {
+        // console.log(`fibonacci temp ${num}`);
+        count = 0;
+      }
+      return num;
     }
-    const end = moment();
-    console.log('PT FIBONACCI END', end, `Took (${end.diff(start)}ms)`);
-  }, 10000);
+    return fibonacci(num - 1) + fibonacci(num - 2);
+  };
+
+  const start = moment();
+  const iterations = Meteor.settings.private.ITERATIONS || 1;
+  console.log('PT FIBONACCI START', start, 'iterations:', iterations);
+  for (let i = 1; i <= iterations; i++) {
+    const startIt = moment();
+    fibonacci(43);
+    const endIt = moment();
+    console.log(
+      `Fibonacci(43) - iteration ${i} - took ${endIt.diff(startIt)}ms`
+    );
+  }
+  const end = moment();
+  console.log('PT FIBONACCI END', end, `Took (${end.diff(start)}ms)`);
+}
+
+const run = () => {
+  runAppSpecific();
+  runFib();
+};
+
+Meteor.methods({
+  run,
+  runAppSpecific,
+  runFib,
+});
+
+Meteor.startup(() => {
+  if (process.env.AUTO_RUN) {
+    Meteor.setTimeout(() => {
+      run();
+    }, 10000);
+  }
 });
